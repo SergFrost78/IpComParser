@@ -8,7 +8,7 @@ data = {
     'font': 'mr_Payload SpraycanG',
     'color': 'white',
     'size': 180,
-    'transperent': .8
+    'transperent': 80
 }
 
 
@@ -31,14 +31,13 @@ class MyWindow(QtWidgets.QWidget):
         self.default_font = {
             'family': 'Arial',
             'size': 150,
-            'tranparent': .3,
+            'tranparent': 30,
             'color': 'white'
         }
 
-
         self.hide_show_flsg = 1
-
         self.initUI()
+
         self.setFontStyle(self.default_font)
 
         self.press = False
@@ -78,7 +77,6 @@ class MyWindow(QtWidgets.QWidget):
         self.font_list = self.font_list.families()
         #print(self.font_list)
         # ...........................................................Список рифотв'''
-        
 
     def systemIcon(self, reason): # ............................Свернуть/развернуть по клику в системном трее
         if reason == QtWidgets.QSystemTrayIcon.Trigger:
@@ -91,21 +89,11 @@ class MyWindow(QtWidgets.QWidget):
     
     def setFontStyle(self, data):
         self.label.setFont(QtGui.QFont(data['family'], data['size']))  # Изменить шрифт
-        self.label.setStyleSheet(f'color: {data["color"]};')  # Цвет и прозрачность
-        #self.color = 'QLabel { color:' + f' rgba({self.font_colors[data["color"]]}, 1);' + ' }'  # Цвет и прозрачность
-        #print(self.color)
+        self.label.setStyleSheet(f"color: rgba(0, 255, 255, {data['tranparent']});")  # Цвет и прозрачность
 
+        print(data)
 
     def initUI(self):
-        '''if self.color == 'black':
-            self.color = "QLabel { color: rgba(0, 0, 0, 1); }"
-        if self.color == 'white':
-            self.color = "QLabel { color: rgba(255, 255, 255, 1); }"'''
-            
-
-        #self.WHITE = "QLabel { color: rgba(255, 255, 255, 1); }"
-        #self.BLACK = "QLabel { color: rgba(0, 0, 0, 1); }"
-
         self.label = QtWidgets.QLabel()
         
         self.label.setText('Helllo')  # Изменить текст
@@ -166,6 +154,8 @@ class MyWindow(QtWidgets.QWidget):
         settings_menu.addMenu(color_menu)
 
         action = context_menu.exec_(self.mapToGlobal(event.pos()))
+        print(action.text())
+        print(type(action.text()))
 
         if action == quit_action:
             sys.exit(app.exec())
@@ -176,8 +166,9 @@ class MyWindow(QtWidgets.QWidget):
         elif int(action.text()) in self.font_sizes:
             self.default_font['size'] = int(action.text())
             ###################################################################################################
-        elif float(action.text()) in self.font_transparents:
+        elif action.text() in str(self.font_transparents):
             print('transparent')
+            self.default_font['tranparent'] = int(action.text()) / 100
         elif action.text() in self.font_colors.keys:
             self.default_font['color'] = action.text()
             print(action.text())
