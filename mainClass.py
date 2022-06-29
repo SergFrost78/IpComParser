@@ -17,7 +17,7 @@ class MyWindow(QtWidgets.QWidget):
         super(MyWindow, self).__init__()
         self.font_list = ['Arial', 'Arial Black', 'Calibri', 'Calibri Light', 'Comic Sans MS', 'Courier', 'Courier New', 'Georgia', 'Impact', 'Modern', 'System', 'Tahoma', 'Terminal', 'Times New Roman']
         self.font_sizes = [70, 100, 150, 200]
-        self.font_transparents = [.3, .4, .5, .6, .7, .8, .9, 1]
+        self.font_transparents = [30, 40, 50, 60, 70, 80, 90, 100]
         self.font_colors = {
             'white': '255, 255, 255',
             'black': '0, 0, 0',
@@ -166,7 +166,7 @@ class MyWindow(QtWidgets.QWidget):
         settings_menu.addMenu(color_menu)
 
         action = context_menu.exec_(self.mapToGlobal(event.pos()))
-        #print(action.text())
+
         if action == quit_action:
             sys.exit(app.exec())
         elif action == hide_action:
