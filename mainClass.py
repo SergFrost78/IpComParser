@@ -31,7 +31,7 @@ class MyWindow(QtWidgets.QWidget):
         self.default_font = {
             'family': 'Arial',
             'size': 150,
-            'tranparent': 30,
+            'tranparent': 80,
             'color': 'white'
         }
 
