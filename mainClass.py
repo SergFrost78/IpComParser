@@ -15,8 +15,12 @@ data = {
 class MyWindow(QtWidgets.QWidget):
     def __init__(self):
         super(MyWindow, self).__init__()
-        self.font_list = ['Arial', 'Arial Black', 'Calibri', 'Calibri Light', 'Comic Sans MS', 'Courier', 'Courier New', 'Georgia', 'Impact', 'Modern', 'System', 'Tahoma', 'Terminal', 'Times New Roman']
-        self.font_sizes = [70, 100, 150, 200]
+        #self.font_list = ['Arial', 'Arial Black', 'Calibri', 'Calibri Light', 'Comic Sans MS', 'Courier', 'Courier New', 'Georgia', 'Impact', 'Modern', 'System', 'Tahoma', 'Terminal', 'Times New Roman']
+        # Список рифотв ............................................ Список рифотв
+        self.font_list = QtGui.QFontDatabase()
+        self.font_list = self.font_list.families()
+        # ...........................................................Список рифотв
+        self.font_sizes = [75, 110, 150, 200]
         self.font_transparents = [30, 40, 50, 60, 70, 80, 90, 100]
         self.font_colors = {
             'white': '255, 255, 255',
@@ -72,12 +76,6 @@ class MyWindow(QtWidgets.QWidget):
         self.tray_icon.activated.connect(self.systemIcon)
         # .........................................................................Инициализируем иконку в Трее
 
-        '''# Список рифотв ............................................ Список рифотв
-        self.font_list = QtGui.QFontDatabase()
-        self.font_list = self.font_list.families()
-        #print(self.font_list)
-        # ...........................................................Список рифотв'''
-
     def systemIcon(self, reason): # ............................Свернуть/развернуть по клику в системном трее
         if reason == QtWidgets.QSystemTrayIcon.Trigger:
             if self.hide_show_flsg == 1:
@@ -120,6 +118,8 @@ class MyWindow(QtWidgets.QWidget):
         if event.button() == Qt.LeftButton:
             self.press = False
 # ................................................................................... # Перетаскивание окна за виджеты
+
+
 
 # Контекстное меню .................................................................. Контекстное меню
     def contextMenuEvent(self, event: QtGui.QContextMenuEvent) -> None:
