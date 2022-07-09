@@ -15,10 +15,10 @@ data = {
 class MyWindow(QtWidgets.QWidget):
     def __init__(self):
         super(MyWindow, self).__init__()
-        #self.font_list = ['Arial', 'Arial Black', 'Calibri', 'Calibri Light', 'Comic Sans MS', 'Courier', 'Courier New', 'Georgia', 'Impact', 'Modern', 'System', 'Tahoma', 'Terminal', 'Times New Roman']
+        self.font_list = ['Arial', 'Arial Black', 'Calibri', 'Calibri Light', 'Comic Sans MS', 'Courier New', 'Georgia', 'Impact', 'Tahoma', 'Times New Roman']
         # Список рифотв ............................................ Список рифотв
-        self.font_list = QtGui.QFontDatabase()
-        self.font_list = self.font_list.families()
+        #self.font_list = QtGui.QFontDatabase()
+        #self.font_list = self.font_list.families()
         # ...........................................................Список рифотв
         self.font_sizes = [75, 110, 150, 200]
         self.font_transparents = [30, 40, 50, 60, 70, 80, 90, 100]
@@ -90,6 +90,9 @@ class MyWindow(QtWidgets.QWidget):
         self.label.setStyleSheet(f"color: rgba(0, 255, 255, {data['tranparent']});")  # Цвет и прозрачность
 
         print(data)
+    def colorDialod(self):
+        color = QtWidgets.QColorDialog.getColor()
+        print(color.name())
 
     def initUI(self):
         self.label = QtWidgets.QLabel()
