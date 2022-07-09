@@ -1,5 +1,3 @@
-import sys
-
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import Qt, QPoint
 
@@ -9,7 +7,7 @@ class MyWindow(QtWidgets.QWidget):
         super(MyWindow, self).__init__()
         self.default_font = {
             'family': 'Arial',
-            'size': 150,
+            'size': 100,
             'transparency': 1,
             'color': 'white'
         }
@@ -20,6 +18,7 @@ class MyWindow(QtWidgets.QWidget):
 
         self.press = False
         self.last_pos = QPoint(0, 0)
+
 # Настройки прозрачности окна и т. п......................................# Настройки прозрачности окна и т. п.
         self.setAttribute(Qt.WA_TranslucentBackground, True) 
         self.setWindowFlags(Qt.FramelessWindowHint)
@@ -31,23 +30,31 @@ class MyWindow(QtWidgets.QWidget):
             | QtCore.Qt.Tool
         )
 
-
     def reload(self, data):
-        self.label.setFont(QtGui.QFont(data['family'], data['size']))  # Изменить шрифт
-        self.label.setStyleSheet(f"color: rgba(255, 255, 255, {data['transparency']});")  # Цвет и прозрачность
+        self.label.setFont(QtGui.QFont('Arial', 70))  # Изменить шрифт
+        self.label.setStyleSheet(f"color: rgba(255, 255, 255, 1);")  # Цвет и прозрачность
 
-
+        self.label2.setFont(QtGui.QFont('Arial', 30))  # Изменить шрифт
+        self.label2.setStyleSheet(f"color: rgba(255, 255, 255, 1);")  # Цвет и прозрачность
 
     def initUI(self):
         self.label = QtWidgets.QLabel()
+        self.label2 = QtWidgets.QLabel()
         
-        self.label.setText('Helllo')  # Изменить текст
+        self.label.setText('Hell')  # Изменить текст
         self.label.setAutoFillBackground(False)
-        self.label.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        self.label.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignRight | QtCore.Qt.AlignBottom)
         self.label.setWordWrap(False)
 
+        self.label2.setAutoFillBackground(False)
+        self.label2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignRight | QtCore.Qt.AlignTop)
+        self.label2.setWordWrap(False)
+
         self.layout = QtWidgets.QVBoxLayout()
-        self.layout.addWidget(self.label)
+
+        self.layout.addWidget(self.label, 0, Qt.AlignBottom)
+        self.layout.addWidget(self.label2, 0, Qt.AlignTop)
+
         self.setLayout(self.layout)
 
 # Перетаскивание окна за виджеты .................................................. # Перетаскивание окна за виджеты
@@ -67,19 +74,14 @@ class MyWindow(QtWidgets.QWidget):
 
 # Контекстное меню .................................................................. Контекстное меню
     def contextMenuEvent(self, event: QtGui.QContextMenuEvent) -> None:
-        context_menu = QtWidgets.QMenu(self)
+        self.context_menu = QtWidgets.QMenu(self)
 
-        settings_menu = QtWidgets.QMenu(context_menu)
+        hide_action = self.context_menu.addAction('Скрыть')
+        reload_action = self.context_menu.addAction('Обновить')
 
-        hide_action = context_menu.addAction('Скрыть')
-        settings_action = context_menu.addAction('Настройки')
-        quit_action = context_menu.addAction('Закрыть')
+        action = self.context_menu.exec_(self.mapToGlobal(event.pos()))
 
-        action = context_menu.exec_(self.mapToGlobal(event.pos()))
-
-        if action == quit_action:
-            sys.exit(self.close())
-        elif action == hide_action:
+        if action == hide_action:
             self.hide()
-        elif action == settings_action:
-            pass
+        elif action == reload_action:
+            self.reload('___')
