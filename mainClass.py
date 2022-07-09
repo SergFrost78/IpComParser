@@ -14,8 +14,6 @@ class MyWindow(QtWidgets.QWidget):
 
         self.initUI()
 
-        self.reload(self.default_font)
-
         self.press = False
         self.last_pos = QPoint(0, 0)
 
@@ -30,12 +28,8 @@ class MyWindow(QtWidgets.QWidget):
             | QtCore.Qt.Tool
         )
 
-    def reload(self, data):
-        self.label.setFont(QtGui.QFont('Arial', 70))  # Изменить шрифт
-        self.label.setStyleSheet(f"color: rgba(255, 255, 255, 1);")  # Цвет и прозрачность
-
-        self.label2.setFont(QtGui.QFont('Arial', 30))  # Изменить шрифт
-        self.label2.setStyleSheet(f"color: rgba(255, 255, 255, 1);")  # Цвет и прозрачность
+    def reload(self):
+        pass
 
     def initUI(self):
         self.label = QtWidgets.QLabel()
@@ -76,12 +70,9 @@ class MyWindow(QtWidgets.QWidget):
     def contextMenuEvent(self, event: QtGui.QContextMenuEvent) -> None:
         self.context_menu = QtWidgets.QMenu(self)
 
-        hide_action = self.context_menu.addAction('Скрыть')
-        reload_action = self.context_menu.addAction('Обновить')
+        self.hide_action = self.context_menu.addAction('Скрыть')
+        self.reload_action = self.context_menu.addAction('Обновить')
 
-        action = self.context_menu.exec_(self.mapToGlobal(event.pos()))
+        self.action = self.context_menu.exec_(self.mapToGlobal(event.pos()))
 
-        if action == hide_action:
-            self.hide()
-        elif action == reload_action:
-            self.reload('___')
+

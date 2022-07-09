@@ -2,13 +2,20 @@ from PyQt5 import QtWidgets, QtGui
 import sys
 from mainClass import MyWindow
 
+label_font = {
+    'text1': '254',
+    'font_family1': 'Arial',
+    'font_size1': 100,
+    'text2': '31 days',
+    'font_family2': 'Comic Sans MS',
+    'font_size2': 30,
+}
 
 class DesktopWidget(MyWindow):
-    def __init__(self):
+    def __init__(self, data):
         super(DesktopWidget, self).__init__()
+        self.data = data
         self.hide_show_flag = 1
-        self.label.setText('455')
-        self.label2.setText('35 days')
         # self.secondWin = MyWindow()
         # self.secondWin.show()
 
@@ -28,6 +35,15 @@ class DesktopWidget(MyWindow):
 
         self.tray_icon.show()
         self.tray_icon.activated.connect(self.systemIcon)
+        self.reload(self.data)
+
+    def reload(self, data):
+        self.label.setText(data['text1'])
+        self.label.setFont(QtGui.QFont(data['font_family1'], data['font_size1']))  # Изменить шрифт
+        # self.label.setStyleSheet(f"color: rgba(255, 255, 255, 1);")  # Цвет и прозрачность
+
+        self.label2.setText(data['text2'])
+        self.label2.setFont(QtGui.QFont(data['font_family2'], data['font_size2']))  # Изменить шрифт
 
     def systemIcon(self, reason): # ............................Свернуть/развернуть по клику в системном трее
         if reason == QtWidgets.QSystemTrayIcon.Trigger:
@@ -41,23 +57,26 @@ class DesktopWidget(MyWindow):
     def contextMenuEvent(self, event: QtGui.QContextMenuEvent) -> None:
         self.context_menu = QtWidgets.QMenu(self)
 
+        self.reload_action = self.context_menu.addAction('Обновить')
         hide_action = self.context_menu.addAction('Скрыть')
         settings_action = self.context_menu.addAction('Настройки')
         quit_action = self.context_menu.addAction('Закрыть')
 
-        action = self.context_menu.exec_(self.mapToGlobal(event.pos()))
+        self.action = self.context_menu.exec_(self.mapToGlobal(event.pos()))
 
-        if action == quit_action:
+        if self.action == quit_action:
             sys.exit(self.close())
-        elif action == hide_action:
+        elif self.action == hide_action:
             self.hide()
             self.hide_show_flag = 0
-        elif action == settings_action:
+        elif self.action == settings_action:
+            pass
+        elif self.action == self.reload_action:
             pass
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    application = DesktopWidget()
+    application = DesktopWidget(label_font)
     application.show()
 
     sys.exit(app.exec())
