@@ -3,12 +3,16 @@ import sys
 from mainClass import MyWindow
 
 label_font = {
-    'text1': '254',
-    'font_family1': 'Arial',
-    'font_size1': 100,
-    'text2': '31 days',
-    'font_family2': 'Comic Sans MS',
-    'font_size2': 30,
+    'text_1': '254',
+    'font_family_1': 'Arial',
+    'font_size_1': 150,
+    'transparency_1': 1,
+    'font_color_1': '255, 255, 255',
+    'text_2': '31 days',
+    'font_family_2': 'Comic Sans MS',
+    'font_size_2': 30,
+    'transparency_2': 1,
+    'font_color_2': '0, 0, 0',
 }
 
 class DesktopWidget(MyWindow):
@@ -38,12 +42,13 @@ class DesktopWidget(MyWindow):
         self.reload(self.data)
 
     def reload(self, data):
-        self.label.setText(data['text1'])
-        self.label.setFont(QtGui.QFont(data['font_family1'], data['font_size1']))  # Изменить шрифт
-        # self.label.setStyleSheet(f"color: rgba(255, 255, 255, 1);")  # Цвет и прозрачность
+        self.label.setText(data['text_1'])
+        self.label.setFont(QtGui.QFont(data['font_family_1'], data['font_size_1']))  # Изменить шрифт
+        self.label.setStyleSheet(f"color: rgba({data['font_color_1']}, {data['transparency_1']});")  # Цвет и прозрачность
 
-        self.label2.setText(data['text2'])
-        self.label2.setFont(QtGui.QFont(data['font_family2'], data['font_size2']))  # Изменить шрифт
+        self.label2.setText(data['text_2'])
+        self.label2.setFont(QtGui.QFont(data['font_family_2'], data['font_size_2']))  # Изменить шрифт
+        self.label2.setStyleSheet(f"color: rgba({data['font_color_2']}, {data['transparency_2']});")  # Цвет и прозрачность
 
     def systemIcon(self, reason): # ............................Свернуть/развернуть по клику в системном трее
         if reason == QtWidgets.QSystemTrayIcon.Trigger:
@@ -73,6 +78,7 @@ class DesktopWidget(MyWindow):
             pass
         elif self.action == self.reload_action:
             pass
+
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
