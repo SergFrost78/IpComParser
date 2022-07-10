@@ -28,7 +28,7 @@ class MyWindow(QtWidgets.QWidget):
             | QtCore.Qt.Tool
         )
 
-    def reload(self):
+    def reload(self, data):
         pass
 
     def initUI(self):
@@ -68,11 +68,6 @@ class MyWindow(QtWidgets.QWidget):
 
 # Контекстное меню .................................................................. Контекстное меню
     def contextMenuEvent(self, event: QtGui.QContextMenuEvent) -> None:
-        self.context_menu = QtWidgets.QMenu(self)
-
-        self.hide_action = self.context_menu.addAction('Скрыть')
-        self.reload_action = self.context_menu.addAction('Обновить')
-
-        self.action = self.context_menu.exec_(self.mapToGlobal(event.pos()))
+        pass
 
 
