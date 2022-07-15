@@ -1,28 +1,28 @@
 from PyQt5 import QtWidgets, QtGui
 import sys
 from mainClass import MyWindow
+from modules.IpComParser.my_parser import MyParser
+from modules.IpComParser.my_parser import parser_labels
 
-label_font = {
-    'text_1': '254',
-    'font_family_1': 'Arial',
-    'font_size_1': 150,
-    'transparency_1': 1,
-    'font_color_1': '255, 255, 255',
-    'text_2': '31 days',
-    'font_family_2': 'Comic Sans MS',
-    'font_size_2': 30,
-    'transparency_2': 1,
-    'font_color_2': '0, 0, 0',
-}
+from modules.DateTime.my_dateTime import MyDateTime
+from modules.DateTime.my_dateTime import datetime_labels
+
 
 class DesktopWidget(MyWindow):
-    def __init__(self, data):
+    def __init__(self, parser_lab, datetime_lab):
         super(DesktopWidget, self).__init__()
-        self.data = data
         self.hide_show_flag = 1
-        # self.secondWin = MyWindow()
-        # self.secondWin.show()
 
+        self.parser_labels = parser_lab
+        self.datetime_labels = datetime_lab
+
+        self.parser = MyParser(self.parser_labels)
+        self.parser.show()
+
+        self.datetime = MyDateTime(self.datetime_labels)
+        self.datetime.show()
+
+    def initUI(self):
         # Инициализируем иконку в Трее ............................................Инициализируем иконку в Трее
         self.tray_icon = QtWidgets.QSystemTrayIcon(self)
         self.tray_icon.setIcon(self.style().standardIcon(QtWidgets.QStyle.SP_DesktopIcon))
@@ -39,16 +39,6 @@ class DesktopWidget(MyWindow):
 
         self.tray_icon.show()
         self.tray_icon.activated.connect(self.systemIcon)
-        self.reload(self.data)
-
-    def reload(self, data):
-        self.label.setText(data['text_1'])
-        self.label.setFont(QtGui.QFont(data['font_family_1'], data['font_size_1']))  # Изменить шрифт
-        self.label.setStyleSheet(f"color: rgba({data['font_color_1']}, {data['transparency_1']});")  # Цвет и прозрачность
-
-        self.label2.setText(data['text_2'])
-        self.label2.setFont(QtGui.QFont(data['font_family_2'], data['font_size_2']))  # Изменить шрифт
-        self.label2.setStyleSheet(f"color: rgba({data['font_color_2']}, {data['transparency_2']});")  # Цвет и прозрачность
 
     def systemIcon(self, reason): # ............................Свернуть/развернуть по клику в системном трее
         if reason == QtWidgets.QSystemTrayIcon.Trigger:
@@ -82,7 +72,7 @@ class DesktopWidget(MyWindow):
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    application = DesktopWidget(label_font)
+    application = DesktopWidget(parser_labels, datetime_labels)
     application.show()
 
     sys.exit(app.exec())
