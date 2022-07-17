@@ -2,7 +2,7 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtCore import QPoint, Qt
 import sys
 
-parser_labels = {
+parser_data = {
     'text_1': '254',
     'font_family_1': 'Arial',
     'font_size_1': 150,

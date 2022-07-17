@@ -1,28 +1,25 @@
 from PyQt5 import QtWidgets
 import sys
-from modules.IpComParser.my_parser import MyParser, parser_labels
-from modules.DateTime.my_dateTime import MyDateTime, datetime_labels
+from modules.IpComParser.my_parser import MyParser, parser_data
+from modules.DateTime.my_dateTime import MyDateTime, datetime_data
 
 
 class DesktopWidget(QtWidgets.QWidget):
-    def __init__(self, parser_lab, datetime_lab):
+    def __init__(self, ipparser_data, datetime_date):
         super(DesktopWidget, self).__init__()
         self.action = None
         self.reload_action = None
         self.context_menu = None
         self.tray_icon = None
 
-        self.parser_labels = parser_lab
-        self.datetime_labels = datetime_lab
-
         self.hide_show_flag = 1
         self.init_ui()
 
-        self.parser = MyParser(self.parser_labels)
+        self.parser = MyParser(ipparser_data)
         self.parser.show()
 
-        self.date_time = MyDateTime(self.datetime_labels)
-        self.date_time.show()
+        self.datetime = MyDateTime(datetime_date)
+        self.datetime.show()
         # self.show()
 
     def init_ui(self):
@@ -44,5 +41,5 @@ class DesktopWidget(QtWidgets.QWidget):
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    application = DesktopWidget(parser_labels, datetime_labels)
+    application = DesktopWidget(parser_data, datetime_data)
     sys.exit(app.exec())
