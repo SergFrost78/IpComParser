@@ -1,11 +1,11 @@
 from PyQt5 import QtWidgets
 import sys
 from modules.IpComParser.my_parser import MyParser, parser_data
-from modules.DateTime.my_dateTime import MyDateTime, datetime_data
+from modules.DateTime.my_dateTime import MyDateTime
 
 
 class DesktopWidget(QtWidgets.QWidget):
-    def __init__(self, ipparser_data, datetime_date):
+    def __init__(self, ipparser_data):
         super(DesktopWidget, self).__init__()
         self.action = None
         self.reload_action = None
@@ -18,7 +18,7 @@ class DesktopWidget(QtWidgets.QWidget):
         self.parser = MyParser(ipparser_data)
         self.parser.show()
 
-        self.datetime = MyDateTime(datetime_date)
+        self.datetime = MyDateTime()
         self.datetime.show()
         # self.show()
 
@@ -41,5 +41,5 @@ class DesktopWidget(QtWidgets.QWidget):
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    application = DesktopWidget(parser_data, datetime_data)
+    application = DesktopWidget(parser_data)
     sys.exit(app.exec())

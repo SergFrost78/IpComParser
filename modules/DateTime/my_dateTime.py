@@ -1,23 +1,11 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtCore import QPoint, Qt
+from my_dateTime_data import MyDatetime
 import sys
-
-datetime_data = {
-    'text_1': '12:21',
-    'font_family_1': 'Arial',
-    'font_size_1': 150,
-    'transparency_1': 1,
-    'font_color_1': '255, 255, 0',
-    'text_2': '15.07.2022 Пятница',
-    'font_family_2': 'Comic Sans MS',
-    'font_size_2': 30,
-    'transparency_2': 1,
-    'font_color_2': '0, 0, 0',
-}
 
 
 class MyDateTime(QtWidgets.QWidget):
-    def __init__(self, data):
+    def __init__(self):
         super(MyDateTime, self).__init__()
         self.action = None
         self.reload_action = None
@@ -25,7 +13,23 @@ class MyDateTime(QtWidgets.QWidget):
         self.layout = None
         self.label2 = None
         self.label = None
-        self.data = data
+
+        day_date_time = MyDatetime()
+        day_of_week, current_date, current_time = day_date_time.out()
+
+        datetime_data = {
+            'text_1': current_time,
+            'font_family_1': 'Arial',
+            'font_size_1': 150,
+            'transparency_1': 1,
+            'font_color_1': '255, 255, 0',
+            'text_2': f'{day_of_week}. {current_date}',
+            'font_family_2': 'Comic Sans MS',
+            'font_size_2': 30,
+            'transparency_2': 1,
+            'font_color_2': '0, 0, 0',
+        }
+
         self.hide_show_flag = 1
         self.init_ui()
 
