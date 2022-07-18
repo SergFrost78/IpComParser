@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtCore import QPoint, Qt
-from my_dateTime_data import MyDatetime
+import datetime
 import sys
 
 
@@ -14,16 +14,16 @@ class MyDateTime(QtWidgets.QWidget):
         self.label2 = None
         self.label = None
 
-        day_date_time = MyDatetime()
-        day_of_week, current_date, current_time = day_date_time.out()
+        self.data = datetime.datetime.now()
+        self.week_day = datetime.datetime.today().weekday()
 
-        datetime_data = {
-            'text_1': current_time,
+        self.datetime_data = {
+            'text_1': self.current_time(),
             'font_family_1': 'Arial',
             'font_size_1': 150,
             'transparency_1': 1,
             'font_color_1': '255, 255, 0',
-            'text_2': f'{day_of_week}. {current_date}',
+            'text_2': f'{self.current_day_of_week()}. {self.current_date()}',
             'font_family_2': 'Comic Sans MS',
             'font_size_2': 30,
             'transparency_2': 1,
@@ -32,8 +32,7 @@ class MyDateTime(QtWidgets.QWidget):
 
         self.hide_show_flag = 1
         self.init_ui()
-
-        self.reload(self.data)
+        self.reload(self.datetime_data)
 
         self.press = False
         self.last_pos = QPoint(0, 0)
@@ -113,3 +112,20 @@ class MyDateTime(QtWidgets.QWidget):
             pass
         elif self.action == self.reload_action:
             pass
+
+    def current_date(self):
+        date_now = self.data.date()
+        date_now = str(date_now).split('-')[1:]
+        date_now = date_now[1], date_now[0]
+        date_now = ':'.join(date_now)
+        return date_now
+
+    def current_time(self):
+        time_now = self.data.time()
+        time_now = str(time_now).split(':')[:2]
+        time_now = ':'.join(time_now)
+        return time_now
+
+    def current_day_of_week(self):
+        week = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+        return week[self.week_day]
