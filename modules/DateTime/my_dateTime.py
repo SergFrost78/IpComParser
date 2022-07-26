@@ -2,11 +2,14 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtCore import QPoint, Qt
 import datetime
 import sys
+import os
+import configparser
 
 
 class MyDateTime(QtWidgets.QWidget):
-    def __init__(self):
+    def __init__(self, position):
         super(MyDateTime, self).__init__()
+        self.position = position
         self.action = None
         self.reload_action = None
         self.context_menu = None
@@ -66,6 +69,7 @@ class MyDateTime(QtWidgets.QWidget):
         self.layout.addWidget(self.label2)
 
         self.setLayout(self.layout)
+        self.setGeometry(self.position[0],self.position[1], 1, 1)
 
     def reload(self, data):
         self.label.setText(data['text_1'])
@@ -92,6 +96,7 @@ class MyDateTime(QtWidgets.QWidget):
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.press = False
+            print(self.pos())
 
     def contextMenuEvent(self, event: QtGui.QContextMenuEvent) -> None:
         self.context_menu = QtWidgets.QMenu(self)

@@ -1,12 +1,17 @@
 from PyQt5 import QtWidgets
 import sys
-from modules.IpComParser.my_parser import MyParser, parser_data
+import os
+import configparser
+from modules.IpComParser.my_parser import MyParser
 from modules.DateTime.my_dateTime import MyDateTime
 
 
 class DesktopWidget(QtWidgets.QWidget):
-    def __init__(self, ipparser_data):
+    def __init__(self):
         super(DesktopWidget, self).__init__()
+        self.path = 'Settings.ini'
+        if not os.path.exists(self.path):
+            self.createConfigFile(self.path)
         self.action = None
         self.reload_action = None
         self.context_menu = None
@@ -15,10 +20,10 @@ class DesktopWidget(QtWidgets.QWidget):
         self.hide_show_flag = 1
         self.init_ui()
 
-        self.parser = MyParser(ipparser_data)
+        self.parser = MyParser([800, 200])
         self.parser.show()
 
-        self.datetime = MyDateTime()
+        self.datetime = MyDateTime([273, 40])
         self.datetime.show()
         # self.show()
 
@@ -38,8 +43,15 @@ class DesktopWidget(QtWidgets.QWidget):
         self.tray_icon.setContextMenu(tray_menu)
         self.tray_icon.show()
 
+    def createConfigFile(self, path):
+        config = configparser.ConfigParser()
+        config.add_section('Settings')
+
+        with open(path, 'w') as config_file:
+            config.write(config_file)
+
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    application = DesktopWidget(parser_data)
+    application = DesktopWidget()
     sys.exit(app.exec())

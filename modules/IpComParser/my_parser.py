@@ -2,34 +2,35 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtCore import QPoint, Qt
 import sys
 
-parser_data = {
-    'text_1': '254',
-    'font_family_1': 'Arial',
-    'font_size_1': 150,
-    'transparency_1': 1,
-    'font_color_1': '255, 0, 255',
-    'text_2': '31 days',
-    'font_family_2': 'Comic Sans MS',
-    'font_size_2': 30,
-    'transparency_2': 1,
-    'font_color_2': '0, 0, 0',
-}
-
 
 class MyParser(QtWidgets.QWidget):
-    def __init__(self, data):
+    def __init__(self, position):
         super(MyParser, self).__init__()
+        self.position = position
         self.action = None
         self.reload_action = None
         self.context_menu = None
         self.layout = None
         self.label2 = None
         self.label = None
-        self.data = data
         self.hide_show_flag = 1
         self.init_ui()
         self.press = False
         self.last_pos = QPoint(0, 0)
+        self.setGeometry(self.position[0], self.position[1], 1, 1)
+
+        self.parser_data = {
+            'text_1': '254',
+            'font_family_1': 'Arial',
+            'font_size_1': 150,
+            'transparency_1': 1,
+            'font_color_1': '255, 0, 255',
+            'text_2': '31 days',
+            'font_family_2': 'Comic Sans MS',
+            'font_size_2': 30,
+            'transparency_2': 1,
+            'font_color_2': '0, 0, 0',
+        }
 
         # Настройки прозрачности окна и т. п......................................# Настройки прозрачности окна и т. п.
         self.setAttribute(Qt.WA_TranslucentBackground, True)
@@ -42,7 +43,7 @@ class MyParser(QtWidgets.QWidget):
             | QtCore.Qt.Tool
         )
 
-        self.reload(self.data)
+        self.reload(self.parser_data)
 
     def init_ui(self):
         self.label = QtWidgets.QLabel()
