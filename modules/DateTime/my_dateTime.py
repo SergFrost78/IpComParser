@@ -7,9 +7,10 @@ import configparser
 
 
 class MyDateTime(QtWidgets.QWidget):
-    def __init__(self, position):
+    def __init__(self, path):
         super(MyDateTime, self).__init__()
-        self.position = position
+        self.path = path
+        self.readSettings(self.path)
         self.action = None
         self.reload_action = None
         self.context_menu = None
@@ -39,6 +40,7 @@ class MyDateTime(QtWidgets.QWidget):
 
         self.press = False
         self.last_pos = QPoint(0, 0)
+        #self.setGeometry(100, 100, 1, 1)
 
         # Настройки прозрачности окна и т. п......................................# Настройки прозрачности окна и т. п.
         self.setAttribute(Qt.WA_TranslucentBackground, True)
@@ -69,7 +71,6 @@ class MyDateTime(QtWidgets.QWidget):
         self.layout.addWidget(self.label2)
 
         self.setLayout(self.layout)
-        self.setGeometry(self.position[0],self.position[1], 1, 1)
 
     def reload(self, data):
         self.label.setText(data['text_1'])
@@ -80,7 +81,25 @@ class MyDateTime(QtWidgets.QWidget):
         self.label2.setText(data['text_2'])
         self.label2.setFont(QtGui.QFont(data['font_family_2'], data['font_size_2']))  # Изменить шрифт
         self.label2.setStyleSheet(f"color: rgba({data['font_color_2']}, {data['transparency_2']});")  # Цвет и 
-        # прозрачность 
+        # прозрачность
+
+    def saveSettings(self, path):
+        if os.path.exists(path):
+            config = configparser.ConfigParser()
+            config.read(path)
+            config.set('DateTime Settings', 'position_X', str(self.pos().x()))
+            config.set('DateTime Settings', 'position_Y', str(self.pos().y()))
+
+            with open(path, 'w') as config_file:
+                config.write(config_file)
+
+    def readSettings(self, path):
+        if os.path.exists(path):
+            config = configparser.ConfigParser()
+            config.read(path)
+            position_x = int(config.get('DateTime Settings', 'position_X'))
+            position_y = int(config.get('DateTime Settings', 'position_Y'))
+            self.setGeometry(position_x, position_y, 1, 1)
 
     # Перетаскивание окна за виджеты .................................................. # Перетаскивание окна за виджеты
     def mouseMoveEvent(self, event):
@@ -96,7 +115,7 @@ class MyDateTime(QtWidgets.QWidget):
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.press = False
-            print(self.pos())
+            self.saveSettings(self.path)
 
     def contextMenuEvent(self, event: QtGui.QContextMenuEvent) -> None:
         self.context_menu = QtWidgets.QMenu(self)

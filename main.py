@@ -20,10 +20,10 @@ class DesktopWidget(QtWidgets.QWidget):
         self.hide_show_flag = 1
         self.init_ui()
 
-        self.parser = MyParser([800, 200])
+        self.parser = MyParser(self.path)
         self.parser.show()
 
-        self.datetime = MyDateTime([273, 40])
+        self.datetime = MyDateTime(self.path)
         self.datetime.show()
         # self.show()
 
@@ -45,7 +45,8 @@ class DesktopWidget(QtWidgets.QWidget):
 
     def createConfigFile(self, path):
         config = configparser.ConfigParser()
-        config.add_section('Settings')
+        config.add_section('Parser Settings')
+        config.add_section('DateTime Settings')
 
         with open(path, 'w') as config_file:
             config.write(config_file)

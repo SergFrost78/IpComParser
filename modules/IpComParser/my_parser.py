@@ -1,12 +1,15 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtCore import QPoint, Qt
 import sys
+import os
+import configparser
 
 
 class MyParser(QtWidgets.QWidget):
-    def __init__(self, position):
+    def __init__(self, path):
         super(MyParser, self).__init__()
-        self.position = position
+        self.path = path
+        self.readSettings(self.path)
         self.action = None
         self.reload_action = None
         self.context_menu = None
@@ -17,7 +20,6 @@ class MyParser(QtWidgets.QWidget):
         self.init_ui()
         self.press = False
         self.last_pos = QPoint(0, 0)
-        self.setGeometry(self.position[0], self.position[1], 1, 1)
 
         self.parser_data = {
             'text_1': '254',
@@ -75,6 +77,24 @@ class MyParser(QtWidgets.QWidget):
         self.label2.setStyleSheet(f"color: rgba({data['font_color_2']}, {data['transparency_2']});")  # Цвет и
         # прозрачность
 
+    def saveSettings(self, path):
+        if os.path.exists(path):
+            config = configparser.ConfigParser()
+            config.read(path)
+            config.set('Parser Settings', 'position_X', str(self.pos().x()))
+            config.set('Parser Settings', 'position_Y', str(self.pos().y()))
+
+            with open(path, 'w') as config_file:
+                config.write(config_file)
+
+    def readSettings(self, path):
+        if os.path.exists(path):
+            config = configparser.ConfigParser()
+            config.read(path)
+            position_x = int(config.get('Parser Settings', 'position_X'))
+            position_y = int(config.get('Parser Settings', 'position_Y'))
+            self.setGeometry(position_x, position_y, 1, 1)
+
     def mouseMoveEvent(self, event):
         if self.press:
             self.move(event.globalPos() - self.last_pos)
@@ -88,6 +108,7 @@ class MyParser(QtWidgets.QWidget):
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.press = False
+            self.saveSettings(self.path)
 
     def contextMenuEvent(self, event: QtGui.QContextMenuEvent) -> None:
         self.context_menu = QtWidgets.QMenu(self)
