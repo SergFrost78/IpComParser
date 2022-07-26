@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
-from PyQt5.QtCore import QPoint, Qt
+from PyQt5.QtCore import QPoint, Qt, QTimer
 import datetime
 import sys
 import os
@@ -17,9 +17,6 @@ class MyDateTime(QtWidgets.QWidget):
         self.layout = None
         self.label2 = None
         self.label = None
-
-        self.data = datetime.datetime.now()
-        self.week_day = datetime.datetime.today().weekday()
 
         self.datetime_data = {
             'text_1': self.current_time(),
@@ -40,7 +37,6 @@ class MyDateTime(QtWidgets.QWidget):
 
         self.press = False
         self.last_pos = QPoint(0, 0)
-        #self.setGeometry(100, 100, 1, 1)
 
         # Настройки прозрачности окна и т. п......................................# Настройки прозрачности окна и т. п.
         self.setAttribute(Qt.WA_TranslucentBackground, True)
@@ -52,6 +48,10 @@ class MyDateTime(QtWidgets.QWidget):
             | QtCore.Qt.FramelessWindowHint
             | QtCore.Qt.Tool
         )
+
+        timer = QTimer(self)
+        timer.timeout.connect(self.run)
+        timer.start(1000)
 
     def init_ui(self):
         self.label = QtWidgets.QLabel()
@@ -138,18 +138,27 @@ class MyDateTime(QtWidgets.QWidget):
             pass
 
     def current_date(self):
-        date_now = self.data.date()
+        data = datetime.datetime.now()
+        date_now = data.date()
         date_now = str(date_now).split('-')[1:]
         date_now = date_now[1], date_now[0]
         date_now = ':'.join(date_now)
         return date_now
 
     def current_time(self):
-        time_now = self.data.time()
+        data = datetime.datetime.now()
+        time_now = str(data.time())
         time_now = str(time_now).split(':')[:2]
         time_now = ':'.join(time_now)
         return time_now
 
     def current_day_of_week(self):
+        self.week_day = datetime.datetime.today().weekday()
         week = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
         return week[self.week_day]
+
+    def run(self):
+        time = self.current_time()
+        self.datetime_data['text_1'] = time
+        self.reload(self.datetime_data)
+
